@@ -202,8 +202,9 @@ function App() {
       </nav>
       <div className="sidebar-spacer"/>
       <div className="sidebar-help"><div className="help-icon"><CircleHelp size={18}/></div><strong>Need a hand?</strong><p>Our care support team is here for you.</p><button onClick={() => setNotice('For this academic demo, contact your project administrator.')}>Get support <ArrowUpRight size={14}/></button></div>
-      <button className="nav-item settings-nav" onClick={() => { setPage('settings'); setSidebarOpen(false); }}><Settings size={18}/><span>Settings</span></button>
-      <div className="sidebar-profile"><div className="avatar">{initials(user.name)}</div><div className="profile-text"><strong>{user.name}</strong><span>{role.charAt(0).toUpperCase() + role.slice(1)}</span></div><button className="icon-btn" aria-label="Sign out" onClick={logout}><LogOut size={17}/></button></div>
+      <button className={`nav-item settings-nav ${page === 'settings' ? 'active' : ''}`} onClick={() => { setPage('settings'); setSidebarOpen(false); }}><Settings size={18}/><span>Settings</span></button>
+      <button className="nav-item logout-nav" onClick={logout}><LogOut size={18}/><span>Log out</span></button>
+      <div className="sidebar-profile"><div className="avatar">{initials(user.name)}</div><div className="profile-text"><strong>{user.name}</strong><span>{role.charAt(0).toUpperCase() + role.slice(1)}</span></div></div>
     </aside>
 
     <main className="main-panel">

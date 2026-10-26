@@ -210,7 +210,7 @@ function App() {
     <main className="main-panel">
       <header className="topbar">
         <div className="topbar-left"><button className="icon-btn mobile-menu" onClick={() => setSidebarOpen(true)} aria-label="Open menu"><Menu size={21}/></button><div className="breadcrumbs"><span>Workspace</span><ChevronRight size={14}/><strong>{pageTitle}</strong></div></div>
-        <div className="topbar-right"><div className="search-box"><Search size={17}/><input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search this workspace…"/></div><button className="icon-btn notification-btn" title="Notifications" onClick={() => setNotice('You’re all caught up.')}><Bell size={18}/><i/></button><div className="top-avatar">{initials(user.name)}</div></div>
+        <div className="topbar-right"><div className="search-box"><Search size={17}/><input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search this workspace…"/></div><button className="icon-btn notification-btn" title="Notifications" onClick={() => setNotice('You’re all caught up.')}><Bell size={18}/><i/></button><button className="topbar-logout" onClick={logout} title="Sign out of MediCore"><LogOut size={17}/><span>Log out</span></button><div className="top-avatar">{initials(user.name)}</div></div>
       </header>
 
       <div className="page-content">

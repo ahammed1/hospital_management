@@ -19,6 +19,11 @@ app.use(helmet());
 app.use(cors({ origin: process.env.CLIENT_URL || 'http://localhost:5173' }));
 app.use(express.json({ limit: '1mb' }));
 app.use('/api/auth', rateLimit({ windowMs: 15 * 60 * 1000, limit: 100, standardHeaders: 'draft-7', legacyHeaders: false }));
+app.get('/', (req, res) => res.json({
+  success: true,
+  message: 'Welcome to MediCore Hospital Management API',
+  health: '/api/health'
+}));
 app.get('/api/health', (req, res) => res.json({ success: true, service: 'MediCore API', timestamp: new Date().toISOString() }));
 app.use('/api/auth', authRoutes);
 app.use('/api/departments', departmentRoutes);

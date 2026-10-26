@@ -1,5 +1,5 @@
 import './App.css';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   Activity, Bell, Building2, CalendarDays, Check, ChevronDown, ChevronLeft,
   ChevronRight, CircleHelp, Clock3, FileText, HeartPulse, LayoutDashboard,

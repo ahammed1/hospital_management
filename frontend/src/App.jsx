@@ -6,9 +6,6 @@ import {
   LogOut, Menu, Plus, Search, Settings, ShieldCheck, Stethoscope, Users,
   UserRound, X, ArrowUpRight, ClipboardList, Pill, LoaderCircle
 } from 'lucide-react';
-import {
-  Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis
-} from 'recharts';
 import api from './services/api';
 
 const navItems = [
@@ -19,12 +16,6 @@ const navItems = [
   { id: 'departments', label: 'Departments', icon: Building2 },
   { id: 'records', label: 'Medical records', icon: FileText },
   { id: 'prescriptions', label: 'Prescriptions', icon: Pill }
-];
-
-const demoChart = [
-  { day: 'Mon', visits: 18 }, { day: 'Tue', visits: 27 }, { day: 'Wed', visits: 22 },
-  { day: 'Thu', visits: 35 }, { day: 'Fri', visits: 30 }, { day: 'Sat', visits: 42 },
-  { day: 'Sun', visits: 32 }
 ];
 
 function initials(name = '') {
@@ -284,7 +275,6 @@ function Overview({ stats, appointments, user, setPage, openModal, role }) {
   return <div className="overview-grid">
     <section className="welcome-banner"><div className="welcome-copy"><span className="banner-tag"><span/> YOUR CARE, IN SYNC</span><h2>Every detail.<br/><em>Better connected.</em></h2><p>Keep your day moving with a clearer view of care, people, and priorities.</p><button className="banner-btn" onClick={() => setPage('appointments')}>View appointments <ArrowUpRight size={16}/></button></div><div className="banner-art"><div className="art-ring ring-a"/><div className="art-ring ring-b"/><div className="art-cross"><span/><i/></div><div className="art-pill pill-a"><Activity size={17}/><span>Care insights</span></div><div className="art-pill pill-b"><HeartPulse size={17}/><span>Patient first</span></div><div className="art-number">MC<span>.</span></div></div></section>
     <section className="stats-grid">{shownStats.map((stat, i) => { const Icon = statIcons[i % statIcons.length]; return <div className="stat-card" key={stat.label}><div className={`stat-icon stat-${i % 4}`}><Icon size={19}/></div><span className="stat-label">{stat.label}</span><div className="stat-bottom"><strong>{stat.value}</strong><span className="stat-trend"><ArrowUpRight size={14}/></span></div><div className="stat-foot">Live workspace data</div></div>; })}</section>
-    <section className="panel activity-panel"><div className="panel-header"><div><h3>Patient activity</h3><p>A snapshot of the week</p></div><button className="period-btn">This week <ChevronDown size={14}/></button></div><div className="chart-legend"><span/><strong>Visits</strong><small>Weekly activity overview</small></div><div className="chart-wrap"><ResponsiveContainer width="100%" height="100%"><AreaChart data={demoChart} margin={{ top: 10, right: 8, left: -22, bottom: 0 }}><defs><linearGradient id="visitFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#2d8c78" stopOpacity={0.2}/><stop offset="95%" stopColor="#2d8c78" stopOpacity={0}/></linearGradient></defs><CartesianGrid stroke="#edf0f4" vertical={false}/><XAxis dataKey="day" axisLine={false} tickLine={false} tick={{ fill: '#8993a3', fontSize: 11 }}/><YAxis axisLine={false} tickLine={false} tick={{ fill: '#8993a3', fontSize: 11 }}/><Tooltip contentStyle={{ borderRadius: 12, border: '1px solid #e9edf2', fontSize: 12 }}/><Area type="monotone" dataKey="visits" stroke="#2d8c78" strokeWidth={2.5} fill="url(#visitFill)" activeDot={{ r: 5, fill: '#2d8c78', stroke: '#fff', strokeWidth: 2 }}/></AreaChart></ResponsiveContainer></div><div className="chart-note"><span><i/> Trend visualization</span><span>Demo sample until analytics is connected</span></div></section>
     <section className="panel upcoming-panel"><div className="panel-header"><div><h3>Upcoming appointments</h3><p>Your next scheduled visits</p></div><button className="text-btn" onClick={() => setPage('appointments')}>View all <ArrowUpRight size={15}/></button></div>{next.length ? <div className="upcoming-list">{next.map((a, i) => <div className="upcoming-item" key={a._id}><div className={`appointment-date date-${i % 4}`}><strong>{new Date(a.startAt).getDate()}</strong><span>{new Intl.DateTimeFormat('en', { month: 'short' }).format(new Date(a.startAt))}</span></div><div className="upcoming-details"><strong>{role === 'patient' ? `Dr. ${a.doctor?.user?.name || 'Doctor'}` : a.patient?.name || 'Patient'}</strong><span>{a.doctor?.specialization || a.department?.name || 'Consultation'}</span></div><div className="upcoming-time"><Clock3 size={13}/>{timeLabel(a.startAt)}</div></div>)}</div> : <div className="empty-state compact"><div className="empty-icon"><CalendarDays size={22}/></div><strong>No upcoming appointments</strong><p>New scheduled visits will appear here.</p><button className="text-btn" onClick={() => openModal('appointment')}>Book a visit <ArrowUpRight size={14}/></button></div>}<div className="upcoming-foot"><span><span className="status-dot"/> Schedule synced</span><button onClick={() => setPage('appointments')}>Open calendar <ChevronRight size={14}/></button></div></section>
     <section className="care-note"><div className="care-note-icon"><HeartPulse size={20}/></div><div><strong>Good care is a team effort.</strong><p>Keep patient details up to date and document every visit clearly.</p></div><button onClick={() => setPage('records')} aria-label="View records"><ArrowUpRight size={18}/></button></section>
   </div>;

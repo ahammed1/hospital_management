@@ -190,7 +190,7 @@ function App() {
     const text = `${a.patient?.name || ''} ${a.doctor?.user?.name || ''} ${a.reason || ''} ${a.status || ''}`.toLowerCase();
     return text.includes(search.toLowerCase());
   });
-  const pageTitle = visibleNav.find(item => item.id === page)?.label || 'Overview';
+  const pageTitle = page === 'settings' ? 'Settings' : (visibleNav.find(item => item.id === page)?.label || 'Overview');
 
   return <div className="app-shell">
     {sidebarOpen && <button aria-label="Close navigation" className="mobile-scrim" onClick={() => setSidebarOpen(false)}/>}
@@ -202,7 +202,7 @@ function App() {
       </nav>
       <div className="sidebar-spacer"/>
       <div className="sidebar-help"><div className="help-icon"><CircleHelp size={18}/></div><strong>Need a hand?</strong><p>Our care support team is here for you.</p><button onClick={() => setNotice('For this academic demo, contact your project administrator.')}>Get support <ArrowUpRight size={14}/></button></div>
-      <button className="nav-item settings-nav" onClick={() => setNotice('Settings are planned for a future iteration.')}><Settings size={18}/><span>Settings</span></button>
+      <button className="nav-item settings-nav" onClick={() => { setPage('settings'); setSidebarOpen(false); }}><Settings size={18}/><span>Settings</span></button>
       <div className="sidebar-profile"><div className="avatar">{initials(user.name)}</div><div className="profile-text"><strong>{user.name}</strong><span>{role.charAt(0).toUpperCase() + role.slice(1)}</span></div><button className="icon-btn" aria-label="Sign out" onClick={logout}><LogOut size={17}/></button></div>
     </aside>
 
@@ -225,11 +225,49 @@ function App() {
         {page === 'departments' && <Departments departments={departments} role={role} openModal={openModal}/>}
         {page === 'records' && <Records records={records}/>}
         {page === 'prescriptions' && <Prescriptions prescriptions={prescriptions}/>}
+        {page === 'settings' && <SettingsPage user={user} role={role} />}
       </div>
       <footer className="main-footer"><span>© 2026 MediCore Health Systems</span><span><span className="footer-dot"/> All systems operational</span></footer>
     </main>
 
     {modal && <Modal type={modal} form={form} setForm={setForm} onClose={() => setModal('')} onSubmit={saveForm} error={formError} doctors={doctors} patients={patients} departments={departments} role={role}/>}
+  </div>;
+}
+
+
+function SettingsPage({ user, role }) {
+  const [emailAlerts, setEmailAlerts] = useState(() => localStorage.getItem('medicore_email_alerts') !== 'false');
+  const [appointmentAlerts, setAppointmentAlerts] = useState(() => localStorage.getItem('medicore_appointment_alerts') !== 'false');
+  const [saved, setSaved] = useState(false);
+
+  function savePreferences() {
+    localStorage.setItem('medicore_email_alerts', String(emailAlerts));
+    localStorage.setItem('medicore_appointment_alerts', String(appointmentAlerts));
+    setSaved(true);
+    window.setTimeout(() => setSaved(false), 2500);
+  }
+
+  return <div className="settings-page">
+    <section className="panel settings-card">
+      <div className="panel-header"><div><h3>Account information</h3><p>Your MediCore sign-in profile</p></div><span className="settings-status"><ShieldCheck size={15}/> Account active</span></div>
+      <div className="settings-profile"><div className="settings-avatar">{initials(user?.name)}</div><div><strong>{user?.name || 'MediCore user'}</strong><span>{role.charAt(0).toUpperCase() + role.slice(1)} account</span></div></div>
+      <div className="settings-details">
+        <div><span>Full name</span><strong>{user?.name || '—'}</strong></div>
+        <div><span>Email address</span><strong>{user?.email || '—'}</strong></div>
+        <div><span>Account role</span><strong>{role.charAt(0).toUpperCase() + role.slice(1)}</strong></div>
+      </div>
+      <p className="settings-hint">For account changes or password resets, contact your MediCore administrator. Profile editing is not enabled yet.</p>
+    </section>
+    <section className="panel settings-card">
+      <div className="panel-header"><div><h3>Notifications</h3><p>Choose which reminders this browser should remember</p></div><Bell size={19}/></div>
+      <label className="settings-option"><span><strong>Email notifications</strong><small>Preference for account and service updates</small></span><input type="checkbox" checked={emailAlerts} onChange={e => setEmailAlerts(e.target.checked)} /></label>
+      <label className="settings-option"><span><strong>Appointment reminders</strong><small>Preference for upcoming appointment alerts</small></span><input type="checkbox" checked={appointmentAlerts} onChange={e => setAppointmentAlerts(e.target.checked)} /></label>
+      <p className="settings-hint">These preferences are saved in this browser. They do not send emails or push notifications yet.</p>
+      <div className="settings-actions">{saved && <span className="settings-saved"><Check size={15}/> Preferences saved</span>}<button className="primary-btn" onClick={savePreferences}>Save preferences</button></div>
+    </section>
+    <section className="panel settings-card settings-security">
+      <div className="settings-security-icon"><ShieldCheck size={20}/></div><div><h3>Security & privacy</h3><p>Your session is protected by MediCore authentication. Sign out when using a shared computer.</p></div>
+    </section>
   </div>;
 }
 

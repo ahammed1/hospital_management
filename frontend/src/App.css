@@ -311,3 +311,37 @@ tbody tr:last-child td { border-bottom: 0; }
   .auth-footer { font-size: 8px; }
   .medicine-row { grid-template-columns: 1fr 1fr; }
 }
+
+
+/* Settings page */
+.settings-page { display: grid; gap: 18px; max-width: 980px; }
+.settings-card { padding: 24px; }
+.settings-status { display: inline-flex; align-items: center; gap: 7px; color: #24745f; background: #eaf6f1; border-radius: 999px; padding: 7px 11px; font-size: 12px; font-weight: 650; white-space: nowrap; }
+.settings-profile { display: flex; align-items: center; gap: 14px; padding: 20px 0; border-bottom: 1px solid #edf0f3; }
+.settings-avatar { width: 54px; height: 54px; border-radius: 17px; display: grid; place-items: center; background: #e5f2ef; color: #267966; font-size: 17px; font-weight: 750; }
+.settings-profile > div:last-child { display: grid; gap: 5px; }
+.settings-profile strong { font-size: 16px; color: #263445; }
+.settings-profile span { color: #8792a1; font-size: 12px; }
+.settings-details { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; padding: 21px 0 7px; }
+.settings-details > div { display: grid; gap: 8px; min-width: 0; }
+.settings-details span, .settings-hint { color: #8490a0; font-size: 12px; }
+.settings-details strong { color: #334155; font-size: 13px; overflow-wrap: anywhere; }
+.settings-hint { line-height: 1.65; margin: 13px 0 0; }
+.settings-option { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 17px 0; border-bottom: 1px solid #edf0f3; cursor: pointer; }
+.settings-option > span { display: grid; gap: 5px; }
+.settings-option strong { color: #334155; font-size: 13px; }
+.settings-option small { color: #8490a0; font-size: 12px; line-height: 1.5; }
+.settings-option input { accent-color: #2d8c78; width: 17px; height: 17px; flex-shrink: 0; }
+.settings-actions { display: flex; align-items: center; justify-content: flex-end; gap: 14px; margin-top: 18px; }
+.settings-saved { display: inline-flex; align-items: center; gap: 6px; color: #24745f; font-size: 12px; }
+.settings-security { display: flex; align-items: flex-start; gap: 15px; }
+.settings-security-icon { width: 42px; height: 42px; flex-shrink: 0; display: grid; place-items: center; border-radius: 13px; background: #eaf6f1; color: #267966; }
+.settings-security h3 { margin: 2px 0 7px; color: #263445; font-size: 15px; }
+.settings-security p { margin: 0; color: #8490a0; font-size: 12px; line-height: 1.7; }
+@media (max-width: 700px) {
+  .settings-card { padding: 17px; }
+  .settings-details { grid-template-columns: 1fr; gap: 15px; }
+  .settings-card .panel-header { align-items: flex-start; gap: 10px; }
+  .settings-status { font-size: 10px; padding: 6px 8px; }
+  .settings-actions { flex-wrap: wrap; }
+}

@@ -1,8 +1,12 @@
 
 import "dotenv/config";
+import dns from "node:dns";
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import User from "../models/User.js";
+
+// Match the DNS workaround used by the API server on Windows.
+dns.setServers(["8.8.8.8", "1.1.1.1"]);
 
 async function createAdmin() {
   try {
@@ -15,7 +19,7 @@ async function createAdmin() {
       );
     }
 
-    await mongoose.connect(MONGODB_URI);
+    await mongoose.connect(MONGODB_URI, { serverSelectionTimeoutMS: 12000 });
     console.log("Connected to MongoDB.");
 
     const email = ADMIN_EMAIL.trim().toLowerCase();

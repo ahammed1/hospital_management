@@ -9,7 +9,17 @@ const router = Router();
 const publicUser = user => ({ id: user._id, name: user.name, email: user.email, role: user.role, phone: user.phone });
 
 function signToken(user) {
-  return jwt.sign({ sub: user._id.toString(), role: user.role }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN || '8h' });
+  const secret = process.env.JWT_SECRET?.trim();
+  if (!secret || secret.length < 32) {
+    const error = new Error('JWT_SECRET is missing or too short. Set a random secret of at least 32 characters in backend/.env and restart the backend.');
+    error.code = 'JWT_CONFIGURATION_ERROR';
+    throw error;
+  }
+  return jwt.sign(
+    { sub: user._id.toString(), role: user.role },
+    secret,
+    { expiresIn: process.env.JWT_EXPIRES_IN || '8h' }
+  );
 }
 
 router.post('/register', asyncHandler(async (req, res) => {

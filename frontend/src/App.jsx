@@ -131,6 +131,20 @@ function App() {
         api.get('/departments'), ['admin', 'doctor', 'patient'].includes(role) ? api.get('/medical-records') : Promise.resolve({ data: [] }),
         ['admin', 'doctor', 'patient'].includes(role) ? api.get('/prescriptions') : Promise.resolve({ data: [] })
       ]);
+      const failedRequests = results.filter(result => result.status === 'rejected');
+      if (failedRequests.length) {
+        const sessionExpired = failedRequests.some(result => result.reason?.response?.status === 401);
+        if (sessionExpired) {
+          localStorage.removeItem('medicore_token');
+          localStorage.removeItem('medicore_user');
+          setUser(null);
+          setPage('overview');
+          setNotice('Your session has expired. Please sign in again.');
+          return;
+        }
+        setNotice(friendlyError(failedRequests[0].reason));
+      }
+
       const take = (i, setter, fallback) => results[i].status === 'fulfilled' ? setter(fallback ? fallback(results[i].value.data) : results[i].value.data) : setter([]);
       take(0, setStats, data => data.stats || []);
       take(1, setAppointments);
